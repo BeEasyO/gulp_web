@@ -2,6 +2,7 @@ var gulp = require('gulp');
 // Requires the gulp-sass plugin
 var sass = require('gulp-sass');
 var browserSync = require('browser-sync').create();
+var reload      = browserSync.reload;
 
 gulp.task('browserSync', function() {
   browserSync.init({
@@ -22,7 +23,7 @@ gulp.task('sass', function(){
 
 gulp.task('watch',['sass', 'browserSync'], function(){
   gulp.watch(['app/scss/*.scss', 'app/scss/*.sass'], ['sass']); 
-  // Other watchers
+  gulp.watch("app/*.html").on("change", reload);
 })
 
 gulp.task('default', ['watch', 'sass']);
