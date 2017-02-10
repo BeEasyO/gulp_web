@@ -3,10 +3,7 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 var autoprefixer = require("gulp-autoprefixer");
 var browserSync = require('browser-sync').create();
-<<<<<<< HEAD
 var sourcemaps   = require('gulp-sourcemaps');
-=======
->>>>>>> e75a95227a14b71957f9ac1726e3e412318ada9a
 var reload      = browserSync.reload;
 
 gulp.task('browserSync', function() {
