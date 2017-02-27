@@ -57,6 +57,7 @@ gulp.task('sprite', function() {
             .pipe(spritesmith({
                 imgName: 'sprite.png',
                 cssName: 'sprite.sass',
+                imgPath: '../img/sprite.png',
                 padding: 2,
                 cssFormat: 'sass',
                 algorithm: 'binary-tree',
