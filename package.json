@@ -20,6 +20,6 @@
     "gulp-sourcemap": "^1.0.1",
     "gulp-sourcemaps": "^2.4.1",
     "gulp-uglifyjs": "^0.6.2",
-    "gulp.spritesmith": "^6.3.0",
+    "gulp.spritesmith": "^6.3.0"
   }
 }
