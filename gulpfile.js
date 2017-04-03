@@ -11,7 +11,11 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglifyjs');
 var cssnano = require('gulp-cssnano');
 var rename = require('gulp-rename');
-
+var imagemin = require('gulp-imagemin');
+var pngquant = require('imagemin-pngquant');
+var cache = require('gulp-cache');
+var uncss = require('gulp-uncss');
+var csso = require('gulp-csso');
 
 gulp.task('browserSync', function() {
   browserSync.init({
@@ -46,7 +50,11 @@ gulp.task('scripts', function () {
 
 gulp.task('css-libs', ['sass'], function(){
   return gulp.src('app/css/main.css')
+  .pipe(csso())
   .pipe(cssnano())
+  /*.pipe(uncss({
+            html: ['app/*.html']
+        }))*/
   .pipe(rename({suffix: '.min'}))
   .pipe(gulp.dest('app/css'))
 })
@@ -67,6 +75,17 @@ gulp.task('sprite', function() {
     spriteData.css.pipe(gulp.dest('app/scss/')); // путь, куда сохраняем стили
 });
 
+gulp.task('imagemin', function(){
+	return gulp.src('app/img/**/*')
+	.pipe(cache(imagemin({
+		interlaced: true,
+		progressive: true,
+		svgoPlugins: [{removeVievBox:false}],
+		use: [pngquant()]
+	})))
+	.pipe(gulp.dest('app/img'))
+})
+
 gulp.task('watch',['css-libs', 'browserSync', 'scripts'], function(){
   gulp.watch('app/src/sprites/*.*', ['sprite']);
   gulp.watch(['app/scss/*.scss', 'app/scss/*.sass'], ['sass']); 
@@ -82,14 +101,16 @@ gulp.task('clean', function() {
     .pipe(clean());
 });
 
+gulp.task('clear', function() {
+  return cache.clearAll();
+});
 
 
-gulp.task('build', ['clean', 'sass', 'scripts'], function() {
+gulp.task('build', ['clean', 'sass', 'scripts', 'imagemin'], function() {
 
   var buildJs = gulp.src('app/js/**/*').pipe(gulp.dest('dist/js'));
   var buildCss = gulp.src('app/css/**/*').pipe(gulp.dest('dist/css'));
   var buildFonts = gulp.src('app/fonts/**/*').pipe(gulp.dest('dist/fonts'));
-  var buildImg = gulp.src('app/img/**/*').pipe(gulp.dest('dist/img'));
   var buildHtml = gulp.src('app/*.html').pipe(gulp.dest('dist/'));
 
 });
